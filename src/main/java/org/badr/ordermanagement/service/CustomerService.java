@@ -27,7 +27,7 @@ public class CustomerService {
 		}
 	}
 	
-	public Boolean sendFidelityEmail(){
+	public Boolean sendFidelityEmailToOldestCustomer(){
 		boolean emailSent = false;
 		Customer customer = customerRepository.findTopByOrderByBirthDateAsc().orElse(null);
 		if (customer != null){
@@ -39,6 +39,6 @@ public class CustomerService {
 	
 	public void sendEmail (Customer customer) throws RuntimeException {
 		// Sending email .....		
-	} 
+	}
 	
 }
