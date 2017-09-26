@@ -8,6 +8,7 @@ package org.badr.ordermanagement.entity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,11 +26,14 @@ public class OrderDetail extends AbstractBaseEntity{
 
     @NaturalId
     @ManyToOne(optional = false)
-    @JoinColumn(name = "order_id")
+	@JoinColumns({
+			@JoinColumn(name = "ORDER_CUSTOMER_ID", referencedColumnName = "CUSTOMER_ID"),
+			@JoinColumn(name = "ORDER_DATE", referencedColumnName = "ORDER_DATE")			
+	})    
     private Order order;
 
     @NaturalId
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false)	
     @JoinColumn(name = "product_id")
     private Product product;
 

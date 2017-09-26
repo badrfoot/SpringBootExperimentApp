@@ -5,6 +5,8 @@
  */
 package org.badr.ordermanagement.entity;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import lombok.Getter;
@@ -16,8 +18,8 @@ import lombok.Setter;
  * @author oussama
  */
 @Embeddable
-@NoArgsConstructor
-@Getter @Setter
+@Access(AccessType.FIELD)
+@NoArgsConstructor @Getter @Setter
 public class Address{
 
     @Column

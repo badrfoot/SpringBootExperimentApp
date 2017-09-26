@@ -10,9 +10,12 @@ import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -30,12 +33,15 @@ import lombok.Setter;
 @Entity
 @NoArgsConstructor
 @Getter @Setter
-public class Order extends AbstractBaseEntity{
+public class Order {	
 
-    @Column
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date orderDate;
-
+	@EmbeddedId
+	private OrderPrimaryKey orderPrimaryKey;
+	
+	@Transient
+    @Setter(AccessLevel.NONE) @Getter(AccessLevel.NONE)
+    private Double totalPrice;
+	
     @Column
     @Temporal(TemporalType.DATE)
     private Date deliveryDate;
@@ -47,19 +53,24 @@ public class Order extends AbstractBaseEntity{
     // TODO // Should not have getter and setter
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "order")
     private List<OrderDetail> orderDetails = new ArrayList<>();
-
-    @Transient
-    @Setter(AccessLevel.NONE) @Getter(AccessLevel.NONE)
-    private Double totalPrice;
+	
+	@ManyToOne
+	@JoinColumn(name = "CREDITCARD_ID")
+	private CreditCard creditCard;
+	
+	@ManyToOne
+	@JoinColumn(name = "BONUSCARD_ID")
+	private BonusCard bonusCard;
 
     /**
      * Calculate the total order price base on {@code orderDetails}
      * @return Total order price
      */
     public Double getTotalPrice() {
-        return orderDetails.stream()//
+		totalPrice = orderDetails.stream()//
                             .mapToDouble(od -> od.getProduct().getUnitPrice())//
                             .sum();
+        return totalPrice;
     }
 
 

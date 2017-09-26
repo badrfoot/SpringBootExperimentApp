@@ -10,6 +10,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -40,9 +41,11 @@ public class Customer extends AbstractBaseEntity{
     private Address address;
 
     @OneToOne(orphanRemoval = true, cascade = CascadeType.ALL)
+	@JoinColumn(name = "BONUSCARD_ID")
     private BonusCard bonusCard;
 
     @OneToOne(orphanRemoval = true, cascade = CascadeType.ALL)
+	@JoinColumn(name = "CREDITCARD_ID")
     private CreditCard creditCard;
 
 }
