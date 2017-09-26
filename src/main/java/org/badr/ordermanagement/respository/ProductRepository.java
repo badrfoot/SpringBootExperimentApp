@@ -8,12 +8,11 @@ package org.badr.ordermanagement.respository;
 import java.util.UUID;
 import org.badr.ordermanagement.entity.Product;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.Repository;
 
 /**
  *
  * @author OBD
  */
-public interface ProductRepository extends Repository<Product, UUID>{
+public interface ProductRepository extends CrudRepository<Product, UUID>{
 	
 }

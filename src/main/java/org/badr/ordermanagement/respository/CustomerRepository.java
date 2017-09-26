@@ -5,8 +5,11 @@
  */
 package org.badr.ordermanagement.respository;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import org.badr.ordermanagement.entity.Customer;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 /**
@@ -14,5 +17,13 @@ import org.springframework.data.repository.CrudRepository;
  * @author OBD
  */
 public interface CustomerRepository extends CrudRepository<Customer, UUID>{
+
+	@Query(value = "SELECT COUNT(o) FROM Order o INNER JOIN o.orderPrimaryKey.customer c")	
+	Long countOrderForCustomer(Customer customer);
+	
+	@Query(value = "SELECT o.orderPrimaryKey.customer FROM Order o")
+	List<Customer> findCustomerThatHasAtLeastOneOrder();	
+	
+	Optional<Customer> findTopByOrderByBirthDateAsc();
 	
 }

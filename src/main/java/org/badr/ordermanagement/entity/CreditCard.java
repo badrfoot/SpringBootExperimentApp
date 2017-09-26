@@ -35,6 +35,13 @@ public class CreditCard extends AbstractBaseEntity{
     @Enumerated(EnumType.STRING)
     private TypeCreditCard type;
 
+	
+	public Boolean isValid(){
+		Date today = new Date();
+		
+		return today.before(expirationDate);
+	}
+
 private enum TypeCreditCard{
     Visa, MasterCard, PayBal
 }

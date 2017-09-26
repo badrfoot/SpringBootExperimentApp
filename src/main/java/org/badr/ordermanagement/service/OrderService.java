@@ -19,17 +19,10 @@ import org.springframework.stereotype.Service;
 public class OrderService {
 	
 	@Autowired
-	private ProductRepository productRepository;
-	
-	@Autowired
-	private OrderRepository orderRepository ;
-	
-	@Autowired
-	private CustomerRepository customerRepository ;
-	
+	private OrderRepository orderRepository ;	
 	
 	public Long justTest(){
-		return customerRepository.count();
-	}
+		return orderRepository.count();
+	}	
 	
 }

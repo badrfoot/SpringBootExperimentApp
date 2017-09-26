@@ -17,6 +17,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
@@ -31,6 +32,7 @@ import lombok.Setter;
  */
 
 @Entity
+@Table(name = "[order]")
 @NoArgsConstructor
 @Getter @Setter
 public class Order {	
@@ -48,18 +50,18 @@ public class Order {
 
     @Column
     @Enumerated(EnumType.STRING)
-    private PaymentType paymentType;
-
+    private PaymentType paymentType;	
+	
     // TODO // Should not have getter and setter
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "order")
     private List<OrderDetail> orderDetails = new ArrayList<>();
 	
 	@ManyToOne
-	@JoinColumn(name = "CREDITCARD_ID")
+	@JoinColumn(name = "PAYMENT_CREDITCARD_ID")
 	private CreditCard creditCard;
 	
 	@ManyToOne
-	@JoinColumn(name = "BONUSCARD_ID")
+	@JoinColumn(name = "BONUSCARD_ID_USED")
 	private BonusCard bonusCard;
 
     /**

@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: org.badr.ordermanagement.BasicApplicationTests
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.854 sec - in org.badr.ordermanagement.BasicApplicationTests
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.833 sec - in org.badr.ordermanagement.BasicApplicationTests
