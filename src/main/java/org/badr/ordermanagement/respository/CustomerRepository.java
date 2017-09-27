@@ -5,10 +5,13 @@
  */
 package org.badr.ordermanagement.respository;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Stream;
 import org.badr.ordermanagement.entity.Customer;
+import org.badr.ordermanagement.entity.enums.PlanetEnum;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
@@ -25,5 +28,9 @@ public interface CustomerRepository extends CrudRepository<Customer, UUID>{
 	List<Customer> findCustomerThatHasAtLeastOneOrder();	
 	
 	Optional<Customer> findTopByOrderByBirthDateAsc();
+	
+	Stream<Customer> findByAddressPlanetIn(Collection<PlanetEnum> planetEnum);
+	
+	Stream<Customer> findByAddressPlanetNotIn(Collection<PlanetEnum> planetEnum);
 	
 }

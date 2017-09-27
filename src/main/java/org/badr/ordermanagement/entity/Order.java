@@ -5,6 +5,7 @@
  */
 package org.badr.ordermanagement.entity;
 
+import org.badr.ordermanagement.entity.enums.PaymentType;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -21,6 +22,9 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
+import javax.validation.constraints.AssertTrue;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -40,10 +44,14 @@ public class Order {
 	@EmbeddedId
 	private OrderPrimaryKey orderPrimaryKey;
 	
+	@Column
+	private Boolean isCanceled;
+	
 	@Transient
     @Setter(AccessLevel.NONE) @Getter(AccessLevel.NONE)
     private Double totalPrice;
 	
+	@NotNull(message = "La date de livraison ne doit pas être null")
     @Column
     @Temporal(TemporalType.DATE)
     private Date deliveryDate;
@@ -52,7 +60,11 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private PaymentType paymentType;	
 	
+	// Validation
+	@NotNull(message = "Les lignes de commandes doit être renseignées")	
+	@Size(min = 1, message = "Les lignes de commandes doit être renseignées")
     // TODO // Should not have getter and setter
+	// JPA
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "order")
     private List<OrderDetail> orderDetails = new ArrayList<>();
 	
@@ -75,11 +87,4 @@ public class Order {
         return totalPrice;
     }
 
-
-private enum PaymentType{
-    CreditCard, Cash
 }
-
-}
-
-

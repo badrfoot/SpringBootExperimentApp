@@ -1,0 +1,3 @@
+org\badr\ordermanagement\AbstractITest.class
+org\badr\ordermanagement\service\OrderServiceTest.class
+org\badr\ordermanagement\BasicApplicationTests.class

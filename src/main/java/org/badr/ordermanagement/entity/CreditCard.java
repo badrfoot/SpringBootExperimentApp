@@ -5,6 +5,7 @@
  */
 package org.badr.ordermanagement.entity;
 
+import org.badr.ordermanagement.entity.enums.TypeCreditCard;
 import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -42,8 +43,6 @@ public class CreditCard extends AbstractBaseEntity{
 		return today.before(expirationDate);
 	}
 
-private enum TypeCreditCard{
-    Visa, MasterCard, PayBal
-}
+
 
 }
