@@ -81,7 +81,7 @@ public class OrderDetail extends AbstractBaseEntity {
     }
 
     public void completeOrderDetail(){
-        if (order.getCompleted()){
+        if (order.getCompleted() && !order.getCanceled()){
             product.substractStoredQuantity(quantity);
         }
     }
