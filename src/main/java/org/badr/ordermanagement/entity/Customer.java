@@ -35,7 +35,7 @@ public class Customer extends AbstractBaseEntity{
 	@Column
 	@Email
 	private String email;
-	
+
     @Column
     private String firstName;
 
@@ -59,7 +59,7 @@ public class Customer extends AbstractBaseEntity{
 	@JoinColumn(name = "CREDITCARD_ID")
     private List<CreditCard> creditCards = new ArrayList<>();
 
-	
+
 	public void setBonusCard(BonusCard bonusCard) {
 		if (this.bonusCard != null){
 			throw new UnsupportedOperationException("Le consommateur a déjà une carte de fidélité!");
@@ -67,11 +67,15 @@ public class Customer extends AbstractBaseEntity{
 		this.bonusCard = bonusCard;
 	}
 
-	public Boolean addCreditCard(CreditCard creditCards) {
+	public Boolean addCreditCard(CreditCard creditCards, boolean active) {
 		if ( !(creditCards.isValid()) ){
 			return false;
 		}
 		return this.creditCards.add(creditCards);
 	}
+
+    public Boolean doesCreditCardExist(CreditCard creditCard) {
+        return this.creditCards.stream().anyMatch(ctcrd -> ctcrd.equals(creditCard));
+    }
 
 }

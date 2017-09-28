@@ -3,7 +3,7 @@ package org.badr.ordermanagement;
 import org.junit.Test;
 
 
-public class BasicApplicationTests extends AbstractITest{
+public class ApplicationContextITests extends AbstractITest{
 
 	@Test
 	public void shoouldLoadContext() {

@@ -12,8 +12,6 @@ import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.badr.ordermanagement.entity.enums.PlanetEnum;
 
@@ -23,7 +21,7 @@ import org.badr.ordermanagement.entity.enums.PlanetEnum;
  */
 @Embeddable
 @Access(AccessType.FIELD)
-@NoArgsConstructor @Getter @Setter
+@lombok.NoArgsConstructor @lombok.Getter @lombok.Setter
 public class Address{
 
     @Column
@@ -40,13 +38,16 @@ public class Address{
 	@Enumerated(EnumType.STRING)
     private PlanetEnum planet;
 
-	
+	/**
+     *
+     * @param country
+     */
 	public void  setCountry(String country) {
 		if ((planet == PlanetEnum.Earth) && (!"France".equals(country.trim()))){
 			throw new IllegalArgumentException("Le seul pays de résidence accepté pour la planete [Earth] est la France");
 		}
-		
+
 		this.country = country;
 	}
-	
+
 }

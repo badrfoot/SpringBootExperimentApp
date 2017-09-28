@@ -15,10 +15,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 /**
  *
@@ -26,15 +22,17 @@ import lombok.Setter;
  */
 @Embeddable
 @Access(AccessType.FIELD)
-@NoArgsConstructor @Getter @Setter @EqualsAndHashCode
+@lombok.NoArgsConstructor @lombok.AllArgsConstructor @lombok.Getter @lombok.EqualsAndHashCode
 public class OrderPrimaryKey implements Serializable{
-	
+
 	@ManyToOne(optional = false)
-	@JoinColumn(name = "CUSTOMER_ID")
+	@JoinColumn(name = "CUSTOMER_ID", nullable = false)
+    @javax.validation.constraints.NotNull(message = "Une commande doit être affectée à un client")
 	private Customer customer;
-			
-    @Column(name = "ORDER_DATE")
-    @Temporal(TemporalType.TIMESTAMP)	
+
+    @Column(name = "ORDER_DATE", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    @javax.validation.constraints.NotNull(message = "Une commande doit avoir une date")
     private Date orderDate;
-	
+
 }

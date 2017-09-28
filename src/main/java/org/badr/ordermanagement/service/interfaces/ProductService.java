@@ -15,12 +15,12 @@ import org.badr.ordermanagement.entity.Product;
  */
 public interface ProductService {
 
-	List<Product> getTopSelledProduct();	
-	
-	List<Product> getLessSelledProduct();	
-	
+	Product getTopSelledProduct();
+
+	Product getLessSelledProduct();
+
 	Optional<Product> getNonOrderedProducts();
-	
-	List<Product> getTopCanceledProducts();	
-	
+
+	List<Product> getTopCanceledProducts();
+
 }

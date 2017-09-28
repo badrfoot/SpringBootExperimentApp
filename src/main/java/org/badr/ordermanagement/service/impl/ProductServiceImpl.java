@@ -19,18 +19,18 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ProductServiceImpl implements ProductService {
-	
+
 	@Autowired
-	private ProductRepository productRepository ;	
+	private ProductRepository productRepository ;
 
 	@Override
-	public List<Product> getTopSelledProduct() {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	public Product getTopSelledProduct() {
+		return productRepository.findTopOrderedProducts();
 	}
 
 	@Override
-	public List<Product> getLessSelledProduct() {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	public Product getLessSelledProduct() {
+		return productRepository.findLessOrderedProducts();
 	}
 
 	@Override
@@ -42,7 +42,7 @@ public class ProductServiceImpl implements ProductService {
 	public List<Product> getTopCanceledProducts() {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
-	
-	
-	
+
+
+
 }
