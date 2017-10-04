@@ -48,6 +48,9 @@ public class OrderDetail extends AbstractBaseEntity {
     @javax.validation.constraints.Min(value = 1, message = "La quantité commandée doit au minumum 1")
     private float quantity;
 
+    @Column
+    private boolean canceled = false;
+
 
     /**
      *
@@ -84,6 +87,14 @@ public class OrderDetail extends AbstractBaseEntity {
         if (order.getCompleted() && !order.getCanceled()){
             product.substractStoredQuantity(quantity);
         }
+    }
+
+    public void cancel(){
+        canceled = true;
+    }
+
+    public void undoCancel(){
+        canceled = false;
     }
 
 }

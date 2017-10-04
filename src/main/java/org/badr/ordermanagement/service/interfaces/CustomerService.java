@@ -17,9 +17,5 @@ public interface CustomerService {
 
 	String getGiftForCustomer(Customer customer);
 	
-	void setBonusCardToCustomer(Customer customer, BonusCard bonusCard);	
-
-	void giveBonusCardToCustomer(Customer customer, BonusCard bonusCard);
-	
 	Stream<Customer> findAlienCustomers();
 }

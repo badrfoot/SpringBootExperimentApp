@@ -19,8 +19,8 @@ public interface ProductService {
 
 	Product getLessSelledProduct();
 
-	Optional<Product> getNonOrderedProducts();
+	List<Product> getNonOrderedProducts();
 
-	List<Product> getTopCanceledProducts();
+	Optional<Product> getTopCanceledProducts();
 
 }

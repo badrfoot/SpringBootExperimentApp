@@ -5,6 +5,7 @@
  */
 package org.badr.ordermanagement.respository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import org.badr.ordermanagement.entity.Product;
@@ -23,11 +24,10 @@ public interface ProductRepository extends PagingAndSortingRepository<Product, U
 	@Query(value = "SELECT od.product, MIN(SUM(od.quantity)) FROM OrderDetail od GROUP BY od.product")
 	Product findLessOrderedProducts();
 
-
     @Query(value = "SELECT p FROM  OrderDetail odp RIGHT JOIN odp.product p")
-    Optional<Product> findNonOrderedProducts();
+    List<Product> findNonOrderedProducts();
 
-//    @Query(value = "SELECT od.product, MAX(COUNT(od)) FROM OrderDetail od WHERE od.")
-//    Optional<Product> findTopCanceledProduct();
+    @Query(value = "SELECT od.product, MAX(COUNT(od)) FROM OrderDetail od GROUP BY od.product")
+    Optional<Product> findTopCanceledProduct();
 
 }

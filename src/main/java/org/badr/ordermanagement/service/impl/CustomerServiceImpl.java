@@ -21,38 +21,25 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class CustomerServiceImpl implements CustomerService {
-	
+
 	@Autowired
-	private CustomerRepository customerRepository;	
-	
-	@Override
-	public void setBonusCardToCustomer(Customer customer, BonusCard bonusCard){
-		if(customerRepository.countOrderForCustomer(customer) > 0L){
-			customer.setBonusCard(bonusCard);
-		}
-	}
+	private CustomerRepository customerRepository;
+
 
 	@Override
 	public String getGiftForCustomer(Customer customer) {
 		String gift = "Rien pour le moment";
-		
+
 		if(customerRepository.countOrderForCustomer(customer) > 10L){
 			gift = "50% pour le prochain achat";
 		}
-		
-		return gift;
-	}
 
-	@Override
-	public void giveBonusCardToCustomer(Customer customer, BonusCard bonusCard) {
-		
+		return gift;
 	}
 
 	@Override
 	public Stream<Customer> findAlienCustomers() {
 		return customerRepository.findByAddressPlanetNotIn(Arrays.asList(PlanetEnum.Earth));
 	}
-	
-	
-	
+
 }

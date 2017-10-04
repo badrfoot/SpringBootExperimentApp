@@ -5,6 +5,10 @@
  */
 package org.badr.ordermanagement.entity;
 
+import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -17,18 +21,20 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Past;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.ScriptAssert;
+import org.springframework.util.Assert;
 
 /**
  *
  * @author oussama
  */
 @Entity
-@NoArgsConstructor
 @Getter @Setter
 public class Customer extends AbstractBaseEntity{
 
@@ -42,9 +48,9 @@ public class Customer extends AbstractBaseEntity{
     @Column
     private String lastName;
 
+    @lombok.Setter(AccessLevel.NONE)
     @Column
-    @Temporal(TemporalType.DATE)
-    private Date birthDate;
+    private LocalDate birthDate;
 
     @Embedded
     private Address address;
@@ -59,6 +65,17 @@ public class Customer extends AbstractBaseEntity{
 	@JoinColumn(name = "CREDITCARD_ID")
     private List<CreditCard> creditCards = new ArrayList<>();
 
+
+    public Customer(LocalDate birthDate) {
+        setBirthDate(birthDate);
+    }
+
+    public final void setBirthDate(LocalDate birthDate) {
+        Assert.notNull(birthDate, "La date de naissance ne doit pas être null!");
+        Assert.isTrue(ChronoUnit.YEARS.between(birthDate, LocalDate.now()) >= 17,
+                       "Le client doit avoir au moins 17 ans!");
+        this.birthDate = birthDate;
+    }
 
 	public void setBonusCard(BonusCard bonusCard) {
 		if (this.bonusCard != null){

@@ -6,6 +6,7 @@
 package org.badr.ordermanagement.entity;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
@@ -31,8 +32,7 @@ public class OrderPrimaryKey implements Serializable{
 	private Customer customer;
 
     @Column(name = "ORDER_DATE", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
     @javax.validation.constraints.NotNull(message = "Une commande doit avoir une date")
-    private Date orderDate;
+    private LocalDate orderDate;
 
 }

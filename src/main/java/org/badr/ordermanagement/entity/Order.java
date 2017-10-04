@@ -5,6 +5,7 @@
  */
 package org.badr.ordermanagement.entity;
 
+import java.time.LocalDate;
 import org.badr.ordermanagement.entity.enums.PaymentType;
 import java.util.ArrayList;
 import java.util.Date;
@@ -58,9 +59,8 @@ public class Order {
     private Double totalPrice;
 
     @Column
-    @Temporal(TemporalType.DATE)
     @javax.validation.constraints.NotNull(message = "La date de livraison ne doit pas être null")
-    private Date deliveryDate;
+    private LocalDate deliveryDate;
 
     @Column
     @Enumerated(EnumType.STRING)
@@ -85,7 +85,7 @@ public class Order {
 	private BonusCard bonusCard;
 
 
-    public Order(Customer customer, Date orderDate) {
+    public Order(Customer customer, LocalDate orderDate) {
         Assert.notNull(orderDate, "Le paramètre [orderDate] ne doit pas être null");
         Assert.notNull(customer, "Le paramètre [orderDate] ne doit pas être null");
         Assert.isTrue( !customer.getFirstName().isEmpty() && !customer.getLastName().isEmpty(),//
@@ -100,8 +100,8 @@ public class Order {
      */
     public Double getTotalPrice() {
 		totalPrice = orderDetails.stream()//
-                            .mapToDouble(OrderDetail::getOrderDetailTotalPrice)//
-                            .sum();
+                                    .mapToDouble(OrderDetail::getOrderDetailTotalPrice)//
+                                    .sum();
         return totalPrice;
     }
 
@@ -152,9 +152,10 @@ public class Order {
      * @param product
      * @return
      */
-    public Boolean doesProductExist(Product product){
+    public Boolean doesProductExistInOrder(Product product){
         return orderDetails.stream()//
-                            .anyMatch(orderDetail -> orderDetail.getProduct().equals(product));
+                            .anyMatch(orderDetail -> //
+                                            orderDetail.getProduct().equals(product));
     }
 
     /**
@@ -164,10 +165,30 @@ public class Order {
     public void cancel(String cancellationReason){
         Assert.isTrue(completed == false, "Impossible de modifier l'état La Commande après la clôture");
         Assert.hasText(cancellationReason, "La raison d'annulation de la commande doit être renseignée");
+
+        this.getOrderDetails().forEach(OrderDetail::cancel);
         this.canceled = true;
         this.cancellationReason = cancellationReason;
 
         completeOrder();
+    }
+
+    public boolean mergeWithOrder(Order order) {
+        Assert.notNull(order, "la paramètre [order] (à merger) ne doit pas être null");
+        Assert.isTrue(completed == false && order.getCompleted() == false,
+                "Impossible de modifier l'état La Commande après la clôture");
+
+        boolean isMerged = true;
+
+        if (getOrderPrimaryKey().getOrderDate()
+                .compareTo(order.getOrderPrimaryKey().getOrderDate()) > 1) {
+            isMerged = false;
+
+        } else {
+            this.orderDetails.addAll(order.getOrderDetails());
+        }
+
+        return isMerged;
     }
 
 }

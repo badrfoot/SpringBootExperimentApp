@@ -5,9 +5,16 @@
  */
 package org.badr.ordermanagement.service.impl;
 
+import com.querydsl.core.types.Expression;
+import com.querydsl.jpa.impl.JPAQuery;
 import java.util.List;
 import java.util.Optional;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import org.badr.ordermanagement.entity.OrderDetail;
 import org.badr.ordermanagement.entity.Product;
+import org.badr.ordermanagement.entity.QOrderDetail;
+import org.badr.ordermanagement.entity.QProduct;
 import org.badr.ordermanagement.respository.ProductRepository;
 import org.badr.ordermanagement.service.interfaces.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +30,10 @@ public class ProductServiceImpl implements ProductService {
 	@Autowired
 	private ProductRepository productRepository ;
 
+    @PersistenceContext
+    EntityManager entityManager;
+
+
 	@Override
 	public Product getTopSelledProduct() {
 		return productRepository.findTopOrderedProducts();
@@ -34,13 +45,23 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public Optional<Product> getNonOrderedProducts() {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	public List<Product> getNonOrderedProducts() {
+		return productRepository.findNonOrderedProducts();
 	}
 
 	@Override
-	public List<Product> getTopCanceledProducts() {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	public Optional<Product> getTopCanceledProducts() {
+
+        QOrderDetail qOrderDetail = QOrderDetail.orderDetail;
+
+        JPAQuery<OrderDetail> queryOrderDetail = new JPAQuery<>(entityManager);
+
+        return Optional.ofNullable(//
+                            queryOrderDetail.select(qOrderDetail.product)//
+                                            .from(qOrderDetail)//
+                                            .groupBy(qOrderDetail.product)//
+                                            .orderBy(qOrderDetail.canceled.count().max().desc())//
+                                            .fetchFirst());
 	}
 
 

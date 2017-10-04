@@ -5,6 +5,8 @@
  */
 package org.badr.ordermanagement.service.interfaces;
 
+import org.badr.ordermanagement.entity.Order;
+
 /**
  *
  * @author OBD
@@ -12,5 +14,7 @@ package org.badr.ordermanagement.service.interfaces;
 public interface OrderService {
 
 	Long justTest();
-	
+
+    
+
 }
