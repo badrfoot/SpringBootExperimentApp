@@ -5,9 +5,10 @@
  */
 package org.badr.ordermanagement.entity;
 
-import static com.fasterxml.jackson.annotation.JsonAutoDetect.*;
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -19,8 +20,6 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -62,11 +61,16 @@ public class Customer extends AbstractBaseEntity{
     @Embedded
     private Address address;
 
+	
+	@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
+    @JsonIdentityReference(alwaysAsId=true)
 	@Setter(AccessLevel.NONE)
     @OneToOne(orphanRemoval = true, cascade = CascadeType.ALL)
 	@JoinColumn(name = "BONUSCARD_ID")
     private BonusCard bonusCard = null;
 
+	@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
+    @JsonIdentityReference(alwaysAsId=true)
 	@Setter(AccessLevel.NONE)
     @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
 	@JoinColumn(name = "CREDITCARD_ID")

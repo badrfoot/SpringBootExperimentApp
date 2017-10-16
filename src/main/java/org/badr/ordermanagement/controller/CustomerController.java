@@ -12,7 +12,6 @@ import com.github.fge.jsonpatch.JsonPatchException;
 import java.io.IOException;
 import java.net.URI;
 import java.util.UUID;
-import javax.persistence.EntityManager;
 import javax.validation.Valid;
 import org.badr.ordermanagement.entity.Customer;
 import org.badr.ordermanagement.respository.CustomerRepository;
@@ -28,6 +27,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -56,6 +56,11 @@ public class CustomerController {
 	
 	@GetMapping(path = CUSTOMER_ID_PATH)
 	public ResponseEntity<?> getCustomerById(@PathVariable(ID_CUSTOMER) Customer customer){		
+		return ResponseEntity.ok(customer);
+	}
+	
+	@GetMapping(params = ID_CUSTOMER)
+	public ResponseEntity<?> getCustomerByIdParam(@RequestParam(ID_CUSTOMER) Customer customer){		
 		return ResponseEntity.ok(customer);
 	}
 	
