@@ -12,6 +12,7 @@ import com.github.fge.jsonpatch.JsonPatchException;
 import java.io.IOException;
 import java.net.URI;
 import java.util.UUID;
+import javax.persistence.EntityManager;
 import javax.validation.Valid;
 import org.badr.ordermanagement.entity.Customer;
 import org.badr.ordermanagement.respository.CustomerRepository;
@@ -37,11 +38,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(path = "/customer")
 public class CustomerController {
 	
+//	@Autowired private EntityManager entityManager;
+	
 	@Autowired private CustomerRepository customerRepository;
 	
 	@Autowired private MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter;
 	
 	final String CUSTOMER_ID_PATH = "/{idCustomer}";
+	
+	final String ID_CUSTOMER = "idCustomer";
 	
 	
 	@GetMapping
@@ -50,16 +55,8 @@ public class CustomerController {
 	}
 	
 	@GetMapping(path = CUSTOMER_ID_PATH)
-	public ResponseEntity<?> getCustomerById(@PathVariable UUID idCustomer){
-		
-		HttpStatus httpStatus = HttpStatus.NOT_FOUND;
-		Customer customer =  customerRepository.findOne(idCustomer);
-		
-		if (customer != null){
-			httpStatus = HttpStatus.OK;
-		}
-		
-		return new ResponseEntity<>(customer, httpStatus);
+	public ResponseEntity<?> getCustomerById(@PathVariable(ID_CUSTOMER) Customer customer){		
+		return ResponseEntity.ok(customer);
 	}
 	
 	@PostMapping
@@ -80,11 +77,10 @@ public class CustomerController {
 	}
 	
 	@PatchMapping(path = CUSTOMER_ID_PATH)
-	public ResponseEntity<?> patchCustomer(@PathVariable UUID idCustomer, @RequestBody String dataToPatch){
+	public ResponseEntity<?> patchCustomer(@PathVariable(ID_CUSTOMER) Customer oldCustomer, @RequestBody String dataToPatch){
 		
-		HttpStatus httpStatus = HttpStatus.NOT_FOUND;
+		HttpStatus httpStatus = HttpStatus.NOT_FOUND;		
 		
-		Customer oldCustomer = customerRepository.findOne(idCustomer);
 		Customer newCustomer = null;
 		
 		if (oldCustomer != null){

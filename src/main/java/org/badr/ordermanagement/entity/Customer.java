@@ -7,6 +7,7 @@ package org.badr.ordermanagement.entity;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.*;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -37,7 +38,6 @@ import org.springframework.util.Assert;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @RequiredArgsConstructor
 @Getter @Setter
-@JsonAutoDetect(fieldVisibility = Visibility.ANY, getterVisibility = Visibility.NONE, isGetterVisibility = Visibility.NONE, setterVisibility = Visibility.NONE)
 public class Customer extends AbstractBaseEntity{
 
 	@Column
@@ -54,6 +54,7 @@ public class Customer extends AbstractBaseEntity{
 	@NotNull
     private String lastName;
 
+	@JsonFormat(pattern = "yyyy-MM-dd")
     @lombok.Setter(AccessLevel.NONE)
     @Column
     private LocalDate birthDate;
@@ -86,7 +87,7 @@ public class Customer extends AbstractBaseEntity{
 		this.bonusCard = bonusCard;
 	}
 
-	public Boolean addCreditCard(CreditCard creditCards, boolean active) {
+	public Boolean addCreditCard(CreditCard creditCards) {
 		if ( !(creditCards.isValid()) ){
 			return false;
 		}

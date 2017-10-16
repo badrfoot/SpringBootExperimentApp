@@ -5,6 +5,7 @@
  */
 package org.badr.ordermanagement.entity;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import java.util.Objects;
 import java.util.UUID;
 import javax.persistence.Column;
@@ -21,6 +22,10 @@ import org.hibernate.annotations.GenericGenerator;
  */
 @MappedSuperclass
 @Getter @NoArgsConstructor
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY, 
+				getterVisibility = JsonAutoDetect.Visibility.NONE, 
+				isGetterVisibility = JsonAutoDetect.Visibility.NONE, 
+				setterVisibility = JsonAutoDetect.Visibility.NONE)
 public abstract class AbstractBaseEntity {
 
     @Id
