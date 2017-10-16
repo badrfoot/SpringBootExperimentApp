@@ -28,6 +28,7 @@ public abstract class AbstractBaseEntity {
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
     @Column(columnDefinition = "BINARY(16)")
     private UUID id;
+	
 
     @Override
     public int hashCode() {

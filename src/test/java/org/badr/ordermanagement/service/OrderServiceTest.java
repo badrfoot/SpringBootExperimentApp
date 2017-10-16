@@ -21,9 +21,6 @@ public class OrderServiceTest extends AbstractITest{
 	private OrderServiceImpl orderService;
 
 	
-	@Test
-	public void testJustTest() {
-		assertEquals("Should be 0", (Long)0L, orderService.justTest()); 
-	}
+	
 	
 }

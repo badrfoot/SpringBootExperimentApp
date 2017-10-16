@@ -18,11 +18,6 @@ import org.springframework.stereotype.Service;
 public class OrderServiceImpl implements OrderService {
 	
 	@Autowired
-	private OrderRepository orderRepository ;	
-	
-	@Override
-	public Long justTest(){		
-		return orderRepository.count();		
-	}	
+	private OrderRepository orderRepository ;
 	
 }

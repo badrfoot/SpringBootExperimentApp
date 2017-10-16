@@ -5,12 +5,11 @@
  */
 package org.badr.ordermanagement.entity;
 
-import java.time.Duration;
-import java.time.Instant;
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.*;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -21,13 +20,13 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.Past;
+import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.ScriptAssert;
 import org.springframework.util.Assert;
 
 /**
@@ -35,7 +34,10 @@ import org.springframework.util.Assert;
  * @author oussama
  */
 @Entity
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@RequiredArgsConstructor
 @Getter @Setter
+@JsonAutoDetect(fieldVisibility = Visibility.ANY, getterVisibility = Visibility.NONE, isGetterVisibility = Visibility.NONE, setterVisibility = Visibility.NONE)
 public class Customer extends AbstractBaseEntity{
 
 	@Column
@@ -43,13 +45,18 @@ public class Customer extends AbstractBaseEntity{
 	private String email;
 
     @Column
+	@lombok.NonNull
+	@NotNull 
     private String firstName;
 
     @Column
+	@lombok.NonNull
+	@NotNull
     private String lastName;
 
     @lombok.Setter(AccessLevel.NONE)
     @Column
+	@Temporal(TemporalType.DATE)
     private LocalDate birthDate;
 
     @Embedded
@@ -64,11 +71,7 @@ public class Customer extends AbstractBaseEntity{
     @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
 	@JoinColumn(name = "CREDITCARD_ID")
     private List<CreditCard> creditCards = new ArrayList<>();
-
-
-    public Customer(LocalDate birthDate) {
-        setBirthDate(birthDate);
-    }
+   
 
     public final void setBirthDate(LocalDate birthDate) {
         Assert.notNull(birthDate, "La date de naissance ne doit pas être null!");

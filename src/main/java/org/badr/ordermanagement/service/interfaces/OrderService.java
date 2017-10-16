@@ -13,8 +13,4 @@ import org.badr.ordermanagement.entity.Order;
  */
 public interface OrderService {
 
-	Long justTest();
-
-    
-
 }
