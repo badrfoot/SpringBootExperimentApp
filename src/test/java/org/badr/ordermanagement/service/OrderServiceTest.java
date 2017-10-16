@@ -9,6 +9,7 @@ import org.badr.ordermanagement.service.impl.OrderServiceImpl;
 import org.badr.ordermanagement.AbstractITest;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.Ignore;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -20,7 +21,10 @@ public class OrderServiceTest extends AbstractITest{
 	@Autowired
 	private OrderServiceImpl orderService;
 
+	@Test @Ignore
+	public void justSimpleTest(){
 	
+	}
 	
 	
 }

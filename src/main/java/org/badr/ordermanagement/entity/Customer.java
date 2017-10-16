@@ -56,7 +56,6 @@ public class Customer extends AbstractBaseEntity{
 
     @lombok.Setter(AccessLevel.NONE)
     @Column
-	@Temporal(TemporalType.DATE)
     private LocalDate birthDate;
 
     @Embedded
