@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -58,6 +59,8 @@ public class CustomerController {
 	public ResponseEntity<?> getCustomerById(@PathVariable(ID_CUSTOMER) Customer customer){		
 		return ResponseEntity.ok(customer);
 	}
+	
+	
 	
 	@GetMapping(params = ID_CUSTOMER)
 	public ResponseEntity<?> getCustomerByIdParam(@RequestParam(ID_CUSTOMER) Customer customer){		
@@ -95,6 +98,12 @@ public class CustomerController {
 		}
 		
 		return new ResponseEntity<>(newCustomer, httpStatus);
+	}
+	
+	@PutMapping
+	public ResponseEntity<?> putCustomer(@RequestBody Customer customer){		
+		customerRepository.save(customer);
+		return  ResponseEntity.ok(customer);
 	}	
 	
 	/**

@@ -6,6 +6,8 @@
 package org.badr.ordermanagement.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.time.LocalDate;
 import java.util.Date;
 import javax.persistence.Column;
@@ -17,6 +19,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.badr.ordermanagement.controller.deserializer.EntityIdResolver;
 import org.hibernate.annotations.NaturalId;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.util.Assert;
@@ -28,6 +31,8 @@ import org.springframework.util.Assert;
 @Entity
 @Getter @Setter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id", 
+				  scope = BonusCard.class, resolver = EntityIdResolver.class)
 public class BonusCard extends AbstractBaseEntity{
 
     @Column

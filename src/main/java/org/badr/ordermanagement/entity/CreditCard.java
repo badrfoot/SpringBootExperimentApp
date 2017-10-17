@@ -6,21 +6,20 @@
 package org.badr.ordermanagement.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.badr.ordermanagement.entity.enums.TypeCreditCard;
 import java.util.Date;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import org.badr.ordermanagement.controller.deserializer.EntityIdResolver;
 
 /**
  *
@@ -29,6 +28,8 @@ import lombok.Setter;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PRIVATE) 
 @Getter
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id", 
+				  scope = CreditCard.class, resolver = EntityIdResolver.class)
 public class CreditCard extends AbstractBaseEntity{
 
 	@JsonFormat(pattern = "yyyy-MM-dd")

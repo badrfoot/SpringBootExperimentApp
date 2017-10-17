@@ -39,8 +39,12 @@ public class CustomerITest extends JsonITest{
 	
 	@Test
 	public void simpleTest() throws IOException{
+		
+		
+		
 		customer.setBirthDate(LocalDate.of(2000, Month.MARCH, 15));		
 		
+		System.out.println(customerJacksonTester.write(customer).getJson());
 		JsonNode jsonNodeSituationFamilleOrigin = objectMapper.convertValue(customer, JsonNode.class);		
 		
 		customer.setFirstName("Steve");
@@ -48,6 +52,8 @@ public class CustomerITest extends JsonITest{
 		String jsonPatch = JsonDiff.asJson(jsonNodeSituationFamilleOrigin, jsonNodeSituationFamilleAfterUpdate).toString();
 		
 		System.out.println("*******" + jsonPatch + "********");
+		
+		
 	}
 	
 	

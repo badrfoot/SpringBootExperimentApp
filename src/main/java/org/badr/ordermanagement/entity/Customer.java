@@ -26,6 +26,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
+import org.badr.ordermanagement.controller.deserializer.EntityIdResolver;
 import org.hibernate.validator.constraints.Email;
 import org.springframework.util.Assert;
 
@@ -36,7 +38,7 @@ import org.springframework.util.Assert;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @RequiredArgsConstructor
-@Getter @Setter
+@Getter @Setter @ToString
 public class Customer extends AbstractBaseEntity{
 
 	@Column
@@ -59,17 +61,14 @@ public class Customer extends AbstractBaseEntity{
     private LocalDate birthDate;
 
     @Embedded
-    private Address address;
-
+    private Address address;	
 	
-	@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
     @JsonIdentityReference(alwaysAsId=true)
 	@Setter(AccessLevel.NONE)
     @OneToOne(orphanRemoval = true, cascade = CascadeType.ALL)
 	@JoinColumn(name = "BONUSCARD_ID")
     private BonusCard bonusCard = null;
-
-	@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
+	
     @JsonIdentityReference(alwaysAsId=true)
 	@Setter(AccessLevel.NONE)
     @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
