@@ -18,6 +18,7 @@ import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
@@ -47,7 +48,7 @@ public class Customer extends AbstractBaseEntity{
 
     @Column
 	@lombok.NonNull
-	@NotNull 
+	@NotNull
     private String firstName;
 
     @Column
@@ -61,20 +62,23 @@ public class Customer extends AbstractBaseEntity{
     private LocalDate birthDate;
 
     @Embedded
-    private Address address;	
-	
+    private Address address;
+
     @JsonIdentityReference(alwaysAsId=true)
 	@Setter(AccessLevel.NONE)
     @OneToOne(orphanRemoval = true, cascade = CascadeType.ALL)
 	@JoinColumn(name = "BONUSCARD_ID")
     private BonusCard bonusCard = null;
-	
+
     @JsonIdentityReference(alwaysAsId=true)
 	@Setter(AccessLevel.NONE)
     @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
 	@JoinColumn(name = "CREDITCARD_ID")
     private List<CreditCard> creditCards = new ArrayList<>();
-   
+
+    @Embedded
+    private Info info;
+
 
     public final void setBirthDate(LocalDate birthDate) {
         Assert.notNull(birthDate, "La date de naissance ne doit pas être null!");
