@@ -5,6 +5,8 @@
  */
 package org.badr.ordermanagement.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -13,6 +15,7 @@ import javax.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.badr.ordermanagement.controller.deserializer.EntityIdResolver;
 import org.hibernate.annotations.NaturalId;
 import org.springframework.util.Assert;
 
@@ -23,6 +26,8 @@ import org.springframework.util.Assert;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id", 
+				  scope = OrderDetail.class, resolver = EntityIdResolver.class)
 public class OrderDetail extends AbstractBaseEntity {
 
     @NaturalId

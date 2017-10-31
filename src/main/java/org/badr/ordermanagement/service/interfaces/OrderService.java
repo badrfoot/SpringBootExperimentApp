@@ -5,6 +5,10 @@
  */
 package org.badr.ordermanagement.service.interfaces;
 
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Stream;
 import org.badr.ordermanagement.entity.Order;
 
 /**
@@ -13,4 +17,13 @@ import org.badr.ordermanagement.entity.Order;
  */
 public interface OrderService {
 
+	Stream<Order> getAllOrders();
+	
+	Optional<Order> getOrderThatHasMaxTotalPrice();
+	
+	Optional<Order> getOrderThatHasMinTotalPrice();
+	
+	Long getCountOfCanceledOrder();
+	
+	List<Order> getAllOrdersBetweenDates(Date startDate, Date endDate);
 }

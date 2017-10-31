@@ -16,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public class EntityIdResolver implements ObjectIdResolver {
 
-	@Autowired private EntityManager entityManager;
+	@Autowired private final EntityManager entityManager;
 	
 
     public EntityIdResolver(final EntityManager entityManager) {
@@ -25,7 +25,7 @@ public class EntityIdResolver implements ObjectIdResolver {
 
     @Override
     public void bindItem(final ObjectIdGenerator.IdKey id, final Object pojo) {
-
+		// nothing to do for now
     }
 
     @Override
