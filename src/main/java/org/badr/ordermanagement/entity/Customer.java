@@ -14,10 +14,17 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
+import javax.persistence.NamedEntityGraphs;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
@@ -28,6 +35,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.badr.ordermanagement.controller.deserializer.EntityIdResolver;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.FetchProfile;
+import org.hibernate.annotations.FetchProfiles;
 import org.hibernate.validator.constraints.Email;
 import org.springframework.util.Assert;
 
@@ -39,6 +50,20 @@ import org.springframework.util.Assert;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @RequiredArgsConstructor
 @Getter @Setter @ToString
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id", 
+				  scope = Customer.class, resolver = EntityIdResolver.class)
+@NamedQueries({
+	@NamedQuery(name = "Customer.findAll", query = "SELECT c FROM Customer c")
+})
+
+@NamedEntityGraph(
+		name = "Customer.findAllWithAllFetch",
+		attributeNodes ={ @NamedAttributeNode("justString")}
+)
+@FetchProfiles({
+	@FetchProfile(name = "WithJustString", 
+			fetchOverrides = {@FetchProfile.FetchOverride(mode = FetchMode.JOIN, association = "justString", entity = Customer.class)})
+})
 public class Customer extends AbstractBaseEntity{
 
 	@Column
@@ -75,7 +100,15 @@ public class Customer extends AbstractBaseEntity{
 	@JoinColumn(name = "CREDITCARD_ID")
     private List<CreditCard> creditCards = new ArrayList<>();
    
+	
+	@ElementCollection
+	@CollectionTable(name = "Just_String")
+	private List<String> justString = new ArrayList<>();
 
+	public String getFullName(){
+		return String.format("%s %s", getFirstName(), getLastName().toUpperCase());
+	}
+	
     public final void setBirthDate(LocalDate birthDate) {
         Assert.notNull(birthDate, "La date de naissance ne doit pas être null!");
         Assert.isTrue(ChronoUnit.YEARS.between(birthDate, LocalDate.now()) >= 17,

@@ -5,11 +5,14 @@
  */
 package org.badr.ordermanagement.service;
 
+import java.util.UUID;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import org.badr.ordermanagement.service.impl.OrderServiceImpl;
 import org.badr.ordermanagement.AbstractITest;
+import org.badr.ordermanagement.entity.Customer;
+import org.hibernate.Session;
 import org.junit.Test;
-import static org.junit.Assert.*;
-import org.junit.Ignore;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -18,12 +21,39 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public class OrderServiceTest extends AbstractITest{
 	
-	@Autowired
-	private OrderServiceImpl orderService;
-
-	@Test @Ignore
-	public void justSimpleTest(){
+	@Autowired	private OrderServiceImpl orderService;
 	
+	@PersistenceContext private EntityManager entityManager;
+
+	@Test //@Ignore
+	public void justSimpleTest(){
+		
+		
+		System.out.println("***********get Customer whithout graph");
+		entityManager.clear();
+		System.out.println("");
+		entityManager.createNamedQuery("Customer.findAll").getResultList().forEach(System.out::println);
+		
+		UUID idCustomer = entityManager.createNamedQuery("Customer.findAll", Customer.class).getResultList().stream().findFirst().get().getId();
+		
+		System.out.println("***********get Customer whith graph");
+		entityManager.clear();
+		System.out.println("");
+		
+		entityManager.createNamedQuery("Customer.findAll")
+					.setHint("javax.persistence.fetchgraph", 
+							entityManager.getEntityGraph("Customer.findAllWithAllFetch"))
+				.getResultList().forEach(System.out::println);
+		
+		
+		System.out.println("***********get Customer whith graph - session");
+		entityManager.clear();
+		Session session = entityManager.unwrap(Session.class);
+		
+		session.enableFetchProfile("WithJustString");
+		System.out.println(session.get(Customer.class, idCustomer));
+		
+		
 	}
 	
 	

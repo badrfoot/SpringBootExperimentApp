@@ -5,7 +5,9 @@
  */
 package org.badr.ordermanagement;
 
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import org.badr.ordermanagement.entity.BonusCard;
 import org.badr.ordermanagement.entity.CreditCard;
 import org.badr.ordermanagement.entity.Customer;
@@ -40,6 +42,10 @@ public class InitData implements ApplicationRunner {
 		Date expirationDate = new java.text.SimpleDateFormat("yyyy-MM-dd").parse("2099-12-01");		
 		CreditCard creditCard = new CreditCard(expirationDate, TypeCreditCard.Visa);		
 		customer.addCreditCard(creditCard);
+		
+		List<String> justStrings = Arrays.asList("Kofitir", "Formage", "Wac", "Raja");
+		
+		customer.setJustString(justStrings);
 		
 		System.out.println("***** Customer UUID is ==> " + customerRepository.save(customer).getId() + "***********");		
 	}

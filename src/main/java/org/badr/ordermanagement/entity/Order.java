@@ -5,10 +5,11 @@
  */
 package org.badr.ordermanagement.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.time.LocalDate;
 import org.badr.ordermanagement.entity.enums.PaymentType;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
@@ -22,10 +23,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import lombok.AccessLevel;
+import org.badr.ordermanagement.controller.deserializer.EntityIdResolver;
 import org.springframework.util.Assert;
 
 /**
@@ -38,6 +38,8 @@ import org.springframework.util.Assert;
 @Access(AccessType.FIELD)
 @lombok.NoArgsConstructor(access = AccessLevel.PRIVATE)
 @lombok.Getter @lombok.Setter
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="orderPrimaryKey", 
+				  scope = Order.class, resolver = EntityIdResolver.class)
 public class Order {
 
 	@EmbeddedId
@@ -173,21 +175,30 @@ public class Order {
         completeOrder();
     }
 
+	/**
+	 * Merge 
+	 * @param order should not completed order, if the merge operation passed, this order will be canceled,
+	 *				it should be newer than this order.
+	 * @return true if the merge passed successfully, false if order parameter is newer than this order
+	 */
     public boolean mergeWithOrder(Order order) {
-        Assert.notNull(order, "la paramètre [order] (à merger) ne doit pas être null");
+        Assert.notNull(order, "la paramètre [order] (à merger) ne doit pas être null");        
         Assert.isTrue(completed == false && order.getCompleted() == false,
-                "Impossible de modifier l'état La Commande après la clôture");
+                "Impossible de modifier l'état de la commande après la clôture");
 
         boolean isMerged = true;
-
-        if (getOrderPrimaryKey().getOrderDate()
-                .compareTo(order.getOrderPrimaryKey().getOrderDate()) > 1) {
+		
+        if (getOrderPrimaryKey().getOrderDate().compareTo(order.getOrderPrimaryKey().getOrderDate()) > 1) {
+			// The merge will fail if this order is more recent than the order passed in parameter.
             isMerged = false;
 
         } else {
             this.orderDetails.addAll(order.getOrderDetails());
+			order.canceled = true;
+			order.cancel(String.format("Merge operation avec la commande: date> %s - Nom Customer> %s", 
+					    this.orderPrimaryKey.getOrderDate(), this.orderPrimaryKey.getCustomer().getFullName()));
         }
-
+		
         return isMerged;
     }
 

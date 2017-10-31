@@ -13,8 +13,8 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.UUID;
 import javax.validation.Valid;
-import org.badr.ordermanagement.entity.Customer;
-import org.badr.ordermanagement.respository.CustomerRepository;
+import org.badr.ordermanagement.entity.Category;
+import org.badr.ordermanagement.respository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.http.HttpStatus;
@@ -36,72 +36,69 @@ import org.springframework.web.bind.annotation.RestController;
  * @author OBD
  */
 @RestController
-@RequestMapping(path = "/customer")
-public class CustomerController {
+@RequestMapping(path = "/category")
+public class CategoryController {
 	
-	@Autowired private CustomerRepository customerRepository;
+	@Autowired private CategoryRepository categoryRepository;
 	
 	@Autowired private MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter;
 	
-	final String CUSTOMER_ID_PATH = "/{idCustomer}";
+	final String ID_CATEGORY = "idCategory";
 	
-	final String ID_CUSTOMER = "idCustomer";
+	final String CATEGORY_ID_PATH = "/{idCategory}";	
 	
 	
 	@GetMapping
-	public ResponseEntity<?> getAllCustomer(){
-		return ResponseEntity.ok(customerRepository.findAll());
+	public ResponseEntity<?> getAllCategory(){
+		return ResponseEntity.ok(categoryRepository.findAll());
 	}
 	
-	@GetMapping(path = CUSTOMER_ID_PATH)
-	public ResponseEntity<?> getCustomerById(@PathVariable(ID_CUSTOMER) Customer customer){		
-		return ResponseEntity.ok(customer);
-	}
+	@GetMapping(path = CATEGORY_ID_PATH)
+	public ResponseEntity<?> getCategoryById(@PathVariable(ID_CATEGORY) Category category){		
+		return ResponseEntity.ok(category);
+	}	
 	
-	
-	
-	@GetMapping(params = ID_CUSTOMER)
-	public ResponseEntity<?> getCustomerByIdParam(@RequestParam(ID_CUSTOMER) Customer customer){		
-		return ResponseEntity.ok(customer);
+	@GetMapping(params = ID_CATEGORY)
+	public ResponseEntity<?> getCategoryByIdParam(@RequestParam(ID_CATEGORY) Category category){		
+		return ResponseEntity.ok(category);
 	}
 	
 	@PostMapping
-	public ResponseEntity<?> addCustomer(@Valid @RequestBody Customer transientCustomer){
+	public ResponseEntity<?> addCategory(@Valid @RequestBody Category transientCategory){
 		
-		Customer customer =  customerRepository.save(transientCustomer);
+		Category category =  categoryRepository.save(transientCategory);
 
-		URI location = ControllerLinkBuilder.linkTo(this.getClass()).slash(customer.getId()).toUri();		
-		return ResponseEntity.created(location).body(customer);
+		URI location = ControllerLinkBuilder.linkTo(this.getClass()).slash(category.getId()).toUri();		
+		return ResponseEntity.created(location).body(category);
 	}
 	
-	@DeleteMapping(path = CUSTOMER_ID_PATH)
-	public ResponseEntity<?> deleteCustomer(@PathVariable UUID idCustomer){
-		
-		customerRepository.delete(idCustomer);
+	@DeleteMapping(path = CATEGORY_ID_PATH)
+	public ResponseEntity<?> deleteCategory(@PathVariable UUID idCategory){		
+		categoryRepository.delete(idCategory);
 		
 		return ResponseEntity.noContent().build();
 	}
 	
-	@PatchMapping(path = CUSTOMER_ID_PATH)
-	public ResponseEntity<?> patchCustomer(@PathVariable(ID_CUSTOMER) Customer oldCustomer, @RequestBody String dataToPatch){
+	@PatchMapping(path = CATEGORY_ID_PATH)
+	public ResponseEntity<?> patchCategory(@PathVariable(ID_CATEGORY) Category oldCategory, @RequestBody String dataToPatch){
 		
 		HttpStatus httpStatus = HttpStatus.NOT_FOUND;		
 		
-		Customer newCustomer = null;
+		Category newCategory = null;
 		
-		if (oldCustomer != null){
-			newCustomer = applyPatch(oldCustomer, dataToPatch);
-			newCustomer	= customerRepository.save(newCustomer);
+		if (oldCategory != null){
+			newCategory = applyPatch(oldCategory, dataToPatch);
+			newCategory	= categoryRepository.save(newCategory);
 			httpStatus = HttpStatus.OK;
 		}
 		
-		return new ResponseEntity<>(newCustomer, httpStatus);
+		return new ResponseEntity<>(newCategory, httpStatus);
 	}
 	
 	@PutMapping
-	public ResponseEntity<?> putCustomer(@RequestBody Customer customer){		
-		customerRepository.save(customer);
-		return  ResponseEntity.ok(customer);
+	public ResponseEntity<?> putCategory(@RequestBody Category category){		
+		categoryRepository.save(category);
+		return  ResponseEntity.ok(category);
 	}	
 	
 	/**
@@ -112,17 +109,17 @@ public class CustomerController {
 	 * @return L'objet bean après le patch.
 	 * @throws RuntimeException
 	 */
-	private Customer applyPatch(Customer oldCustomer, String jsonPatchContent) {
+	private Category applyPatch(Category oldCategory, String jsonPatchContent) {
 		
 		ObjectMapper objectMapper = mappingJackson2HttpMessageConverter.getObjectMapper();
 		
 		try {
 			JsonPatch jsonPatch = objectMapper.readValue(jsonPatchContent, JsonPatch.class);
-			JsonNode jsonNodeOriginBean = objectMapper.convertValue(oldCustomer, JsonNode.class);
+			JsonNode jsonNodeOriginBean = objectMapper.convertValue(oldCategory, JsonNode.class);
 			JsonNode patchedBean = jsonPatch.apply(jsonNodeOriginBean);
 			
 			// Récupérer le nouveau objet après le patch 
-			return objectMapper.treeToValue(patchedBean, Customer.class);
+			return objectMapper.treeToValue(patchedBean, Category.class);
 			
 		} catch (IOException | JsonPatchException ex) {
 			throw new RuntimeException(ex);

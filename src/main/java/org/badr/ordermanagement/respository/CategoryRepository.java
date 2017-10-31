@@ -5,14 +5,14 @@
  */
 package org.badr.ordermanagement.respository;
 
+import java.util.UUID;
 import org.badr.ordermanagement.entity.Category;
-import org.badr.ordermanagement.entity.OrderPrimaryKey;
 import org.springframework.data.repository.CrudRepository;
 
 /**
  *
  * @author OBD
  */
-public interface CategoryRepository extends CrudRepository<Category, OrderPrimaryKey>{
+public interface CategoryRepository extends CrudRepository<Category, UUID>{
 	
 }

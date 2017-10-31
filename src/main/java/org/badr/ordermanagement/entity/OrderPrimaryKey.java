@@ -7,15 +7,12 @@ package org.badr.ordermanagement.entity;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Date;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 /**
  *

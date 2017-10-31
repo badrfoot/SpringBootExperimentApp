@@ -6,7 +6,6 @@
 package org.badr.ordermanagement.service.interfaces;
 
 import java.util.stream.Stream;
-import org.badr.ordermanagement.entity.BonusCard;
 import org.badr.ordermanagement.entity.Customer;
 
 /**
@@ -18,4 +17,5 @@ public interface CustomerService {
 	String getGiftForCustomer(Customer customer);
 	
 	Stream<Customer> findAlienCustomers();
+	
 }
