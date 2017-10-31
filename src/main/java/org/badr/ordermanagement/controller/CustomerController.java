@@ -5,10 +5,12 @@
  */
 package org.badr.ordermanagement.controller;
 
+import java.util.UUID;
 import javax.annotation.PostConstruct;
 import org.badr.ordermanagement.entity.Customer;
 import org.badr.ordermanagement.respository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,15 +21,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(path = "/customer")
 public class CustomerController extends AbstractControllerWithUUID<Customer>{
-	
-	@Autowired private CustomerRepository customerRepository;
-	
-	
-	@PostConstruct	
-	@Override
-	public void setRequiredVaraible(){
-		setCrudRepository(customerRepository);
-		setTargetEntityClass(Customer.class);
+
+	@Autowired
+	public CustomerController(CrudRepository<Customer, UUID> crudRepository) {
+		super(crudRepository);
 	}
 		
 }
