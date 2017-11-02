@@ -22,13 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(path = "/category")
 public class CategoryController extends AbstractControllerWithUUID<Category>{
 	
-	@Autowired private CategoryRepository categoryRepository;	
-
-//	@PostConstruct	
-//	@Override
-//	public void setCrudRepository(){
-//		setCrudRepository(categoryRepository);
-//	}
+	@Autowired private CategoryRepository categoryRepository;
 
 	@Autowired
 	public CategoryController(CrudRepository<Category, UUID> crudRepository) {

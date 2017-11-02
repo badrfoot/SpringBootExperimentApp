@@ -5,28 +5,18 @@
  */
 package org.badr.ordermanagement.controller;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.fge.jsonpatch.JsonPatch;
-import com.github.fge.jsonpatch.JsonPatchException;
-import java.io.IOException;
 import java.net.URI;
 import java.time.LocalDate;
-import java.util.UUID;
 import javax.validation.Valid;
-import org.badr.ordermanagement.entity.AbstractBaseEntity;
 import org.badr.ordermanagement.entity.Customer;
 import org.badr.ordermanagement.entity.Order;
 import org.badr.ordermanagement.entity.OrderPrimaryKey;
-import org.badr.ordermanagement.respository.CustomerRepository;
 import org.badr.ordermanagement.respository.OrderRepository;
 import org.badr.ordermanagement.service.interfaces.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -49,7 +39,6 @@ public class OrderController extends AbstractCommonControllerCapabilities{
 	@Autowired private OrderRepository orderRepository;
 
 	@Autowired private OrderService orderService;
-
 
 	private final String ID_ORDER = "orderID";
 

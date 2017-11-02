@@ -53,17 +53,21 @@ public abstract class AbstractControllerWithUUID<Entity extends AbstractBaseEnti
 	}
 	
 	@GetMapping(path = ENTITY_ID_PATH)
-	public ResponseEntity<?> getCategoryById(@PathVariable(ID_ENTITY) Entity entity){		
-		return ResponseEntity.ok(entity);
+	public ResponseEntity<?> getEntityById(@PathVariable(ID_ENTITY) UUID idEntity){		
+		return ResponseEntity.ok(crudRepository.findOne(idEntity));
 	}	
+//	@GetMapping(path = ENTITY_ID_PATH)
+//	public ResponseEntity<?> getEntityById(@PathVariable(ID_ENTITY) Entity entity){		
+//		return ResponseEntity.ok(entity);
+//	}	
 	
 	@GetMapping(params = ID_ENTITY)
-	public ResponseEntity<?> getCategoryByIdParam(@RequestParam(ID_ENTITY) Entity entity){		
+	public ResponseEntity<?> getEntityByIdParam(@RequestParam(ID_ENTITY) Entity entity){		
 		return ResponseEntity.ok(entity);
 	}
 	
 	@PostMapping
-	public ResponseEntity<?> addCategory(@Valid @RequestBody Entity transientEntity){
+	public ResponseEntity<?> addEntity(@Valid @RequestBody Entity transientEntity){
 		
 		Entity entity =  crudRepository.save(transientEntity);
 
@@ -72,14 +76,14 @@ public abstract class AbstractControllerWithUUID<Entity extends AbstractBaseEnti
 	}
 	
 	@DeleteMapping(path = ENTITY_ID_PATH)
-	public ResponseEntity<?> deleteCategory(@PathVariable UUID entityID){		
+	public ResponseEntity<?> deleteEntity(@PathVariable UUID entityID){		
 		crudRepository.delete(entityID);
 		
 		return ResponseEntity.noContent().build();
 	}
 	
 	@PatchMapping(path = ENTITY_ID_PATH)
-	public ResponseEntity<?> patchCategory(@PathVariable(ID_ENTITY) Entity oldEntity, @RequestBody String dataToPatch){
+	public ResponseEntity<?> patchEntity(@PathVariable(ID_ENTITY) Entity oldEntity, @RequestBody String dataToPatch){
 		
 		HttpStatus httpStatus = HttpStatus.NOT_FOUND;		
 		
@@ -95,7 +99,7 @@ public abstract class AbstractControllerWithUUID<Entity extends AbstractBaseEnti
 	}
 	
 	@PutMapping
-	public ResponseEntity<?> putCategory(@RequestBody Entity entity){		
+	public ResponseEntity<?> putEntity(@RequestBody Entity entity){		
 		crudRepository.save(entity);
 		return  ResponseEntity.ok(entity);
 	}

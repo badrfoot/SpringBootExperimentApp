@@ -9,6 +9,6 @@ package org.badr.ordermanagement.entity;
  *
  * @author OBD
  */
-public interface InterfaceBaseEntity {
+public interface InterfaceBaseEntity{
 	
 }

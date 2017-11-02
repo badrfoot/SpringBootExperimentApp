@@ -15,6 +15,7 @@ import javax.persistence.MappedSuperclass;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.hateoas.Identifiable;
 
 /**
  *
@@ -26,7 +27,7 @@ import org.hibernate.annotations.GenericGenerator;
 				getterVisibility = JsonAutoDetect.Visibility.NONE, 
 				isGetterVisibility = JsonAutoDetect.Visibility.NONE, 
 				setterVisibility = JsonAutoDetect.Visibility.NONE)
-public abstract class AbstractBaseEntity implements InterfaceBaseEntity{
+public abstract class AbstractBaseEntity implements InterfaceBaseEntity, Identifiable<UUID>{
 
     @Id
     @GeneratedValue(generator = "uuid2")
