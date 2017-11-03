@@ -5,29 +5,31 @@
  */
 package org.badr.ordermanagement.entity;
 
-import java.time.Duration;
-import java.time.Instant;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.validation.constraints.Past;
+import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
+import org.badr.ordermanagement.controller.deserializer.EntityIdResolver;
 import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.ScriptAssert;
 import org.springframework.util.Assert;
 
 /**
@@ -35,7 +37,9 @@ import org.springframework.util.Assert;
  * @author oussama
  */
 @Entity
-@Getter @Setter
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@RequiredArgsConstructor
+@Getter @Setter @ToString
 public class Customer extends AbstractBaseEntity{
 
 	@Column
@@ -43,11 +47,16 @@ public class Customer extends AbstractBaseEntity{
 	private String email;
 
     @Column
+	@lombok.NonNull
+	@NotNull
     private String firstName;
 
     @Column
+	@lombok.NonNull
+	@NotNull
     private String lastName;
 
+	@JsonFormat(pattern = "yyyy-MM-dd")
     @lombok.Setter(AccessLevel.NONE)
     @Column
     private LocalDate birthDate;
@@ -55,20 +64,21 @@ public class Customer extends AbstractBaseEntity{
     @Embedded
     private Address address;
 
+    @JsonIdentityReference(alwaysAsId=true)
 	@Setter(AccessLevel.NONE)
     @OneToOne(orphanRemoval = true, cascade = CascadeType.ALL)
 	@JoinColumn(name = "BONUSCARD_ID")
     private BonusCard bonusCard = null;
 
+    @JsonIdentityReference(alwaysAsId=true)
 	@Setter(AccessLevel.NONE)
     @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
 	@JoinColumn(name = "CREDITCARD_ID")
     private List<CreditCard> creditCards = new ArrayList<>();
 
+    @Embedded
+    private Info info;
 
-    public Customer(LocalDate birthDate) {
-        setBirthDate(birthDate);
-    }
 
     public final void setBirthDate(LocalDate birthDate) {
         Assert.notNull(birthDate, "La date de naissance ne doit pas être null!");
@@ -84,7 +94,7 @@ public class Customer extends AbstractBaseEntity{
 		this.bonusCard = bonusCard;
 	}
 
-	public Boolean addCreditCard(CreditCard creditCards, boolean active) {
+	public Boolean addCreditCard(CreditCard creditCards) {
 		if ( !(creditCards.isValid()) ){
 			return false;
 		}

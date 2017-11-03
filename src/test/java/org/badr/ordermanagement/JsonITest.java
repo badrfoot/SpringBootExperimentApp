@@ -6,17 +6,17 @@
 package org.badr.ordermanagement;
 
 import org.junit.runner.RunWith;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.json.AutoConfigureJson;
+import org.springframework.boot.test.autoconfigure.json.AutoConfigureJsonTesters;
+import org.springframework.boot.test.autoconfigure.json.JsonTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
  * @author OBD
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest
-@Transactional
-public class AbstractITest {
+@JsonTest
+public abstract class JsonITest {
 	
 }

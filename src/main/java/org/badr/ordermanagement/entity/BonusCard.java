@@ -5,6 +5,10 @@
  */
 package org.badr.ordermanagement.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import java.time.LocalDate;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,6 +19,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.badr.ordermanagement.controller.deserializer.EntityIdResolver;
 import org.hibernate.annotations.NaturalId;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.util.Assert;
@@ -25,17 +30,21 @@ import org.springframework.util.Assert;
  */
 @Entity
 @Getter @Setter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id", 
+				  scope = BonusCard.class, resolver = EntityIdResolver.class)
 public class BonusCard extends AbstractBaseEntity{
 
     @Column
     @Temporal(TemporalType.TIMESTAMP)
     private Date deliveryDate;
 
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	@Setter(AccessLevel.NONE)
     @Column
     @Temporal(TemporalType.TIMESTAMP)
     private Date activatedDate = null;
-
+	
 	@Length(min = 10)// Validation
     @Column @NaturalId // JPA
     @Setter(value = AccessLevel.NONE) //Lombook
@@ -49,12 +58,20 @@ public class BonusCard extends AbstractBaseEntity{
     @Min(value = 0, message = "Le bonus ne doit pas être négatif")
     @Setter(AccessLevel.NONE)
     private int points = 120;
+	
 
+	public BonusCard(String serialNumber) {
+		Assert.hasText(serialNumber, "[serialNumber] ne doit pas être Null/Empty");		
+		this.serialNumber = serialNumber;
+	}	
 
-	public void setEnabled(Boolean enabled) {
+	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 		if(enabled){
 			activatedDate = new Date();
+		}
+		else{
+			activatedDate = null;
 		}
 	}
 

@@ -7,6 +7,7 @@ public class ApplicationContextITests extends AbstractITest{
 
 	@Test
 	public void shoouldLoadContext() {
+		
 	}
 
 }

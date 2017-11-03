@@ -3,14 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.badr.ordermanagement.service.interfaces;
+package org.badr.ordermanagement.entity.draft;
 
-import org.badr.ordermanagement.entity.Order;
+import javax.persistence.Entity;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  *
- * @author OBD
+ * @author oussama
  */
-public interface OrderService {
+@Entity
+@Getter @Setter
+public class E2 extends E{
+
 
 }
