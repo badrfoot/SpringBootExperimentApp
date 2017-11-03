@@ -31,6 +31,7 @@ import lombok.Setter;
 import lombok.ToString;
 import org.badr.ordermanagement.controller.deserializer.EntityIdResolver;
 import org.hibernate.validator.constraints.Email;
+import org.springframework.hateoas.core.Relation;
 import org.springframework.util.Assert;
 
 /**
@@ -73,13 +74,13 @@ public class Customer extends AbstractBaseEntity {
     @JsonIdentityReference(alwaysAsId=true)
 	@Setter(AccessLevel.NONE)
     @OneToOne(orphanRemoval = true, cascade = CascadeType.ALL)
-	@JoinColumn(name = "BONUSCARD_ID")
+	@JoinColumn(name = "BONUSCARD_ID")	
     private BonusCard bonusCard = null;
 	
     @JsonIdentityReference(alwaysAsId=true)
 	@Setter(AccessLevel.NONE)
     @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
-	@JoinColumn(name = "CREDITCARD_ID")
+	@JoinColumn(name = "CREDITCARD_ID")		
     private List<CreditCard> creditCards = new ArrayList<>();
 	
 	public String getFullName(){
